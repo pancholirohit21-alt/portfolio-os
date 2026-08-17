@@ -1,14 +1,26 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSettingsStore } from '@/store/useSettingsStore';
 
 export default function Resume() {
   const { themeMode, accentColor } = useSettingsStore();
   const isLight = themeMode === 'light';
-  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'projects' | 'education'>('summary');
+  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'projects' | 'skills' | 'education' | 'contact'>('summary');
+
+  useEffect(() => {
+    const handleNavigate = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail) {
+        setActiveTab(customEvent.detail);
+      }
+    };
+    window.addEventListener('navigate-resume', handleNavigate);
+    return () => window.removeEventListener('navigate-resume', handleNavigate);
+  }, []);
 
   const activeTabClass = isLight ? 'bg-indigo-100 text-indigo-700 shadow-inner' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 shadow-inner';
   const inactiveTabClass = isLight ? 'hover:bg-slate-200 text-slate-600' : 'hover:bg-white/5 text-slate-400';
+  const { Download, MapPin, Phone, Mail, Globe } = require('lucide-react');
 
   return (
     <div className={`flex h-full transition-colors ${isLight ? 'bg-slate-50/90 text-slate-900' : 'bg-slate-900/40 text-white'}`}>
@@ -39,6 +51,18 @@ export default function Resume() {
             className={`w-full text-left px-4 py-2.5 rounded-lg transition-all ${activeTab === 'projects' ? activeTabClass : inactiveTabClass}`}
           >
             Projects
+          </button>
+          <button
+            onClick={() => setActiveTab('skills')}
+            className={`w-full text-left px-4 py-2.5 rounded-lg transition-all ${activeTab === 'skills' ? activeTabClass : inactiveTabClass}`}
+          >
+            Skills
+          </button>
+          <button
+            onClick={() => setActiveTab('contact')}
+            className={`w-full text-left px-4 py-2.5 rounded-lg transition-all ${activeTab === 'contact' ? activeTabClass : inactiveTabClass}`}
+          >
+            Contact
           </button>
           <button
             onClick={() => setActiveTab('education')}
@@ -110,6 +134,99 @@ export default function Resume() {
           </div>
         )}
 
+        {activeTab === 'skills' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className={`text-4xl font-extrabold mb-2 ${isLight ? 'text-slate-900' : 'text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400'}`}>Technical Skills</h1>
+            <div className={`w-16 h-1.5 rounded-full mb-8 bg-gradient-to-r ${accentColor}`}></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Frontend</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Angular (v11–Latest), Angular Material, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS, React, Next.js, ngx-translate</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>State Management & Rendering</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>RxJS, Redux, SSR, ISR, SWR, Caching</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Backend & APIs</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Node.js, RESTful APIs</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Performance</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Lazy Loading, Optimised Change Detection, Code Splitting, Version Migration</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border md:col-span-2 ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Core Concepts</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>RBAC, Dynamic Components, CRUD Operations, HTTP Interceptors, Auth Guards, Responsive Design, RTL/LTR Localisation</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Tools</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Git, SourceTree, Bitbucket, Jira, Trello, npm, SQuirreL, Firebase, AWS</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Methodology & Domain</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}><strong>Methodology:</strong> Agile / Scrum / Waterfall<br/><br/><strong>Domain Expertise:</strong> Insurance, Fintech, HRMS, Education, ERP, Casino/iGaming</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'contact' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h1 className={`text-4xl font-extrabold mb-2 ${isLight ? 'text-slate-900' : 'text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400'}`}>Contact Me</h1>
+            <div className={`w-16 h-1.5 rounded-full mb-8 bg-gradient-to-r ${accentColor}`}></div>
+
+            <div className="space-y-6 max-w-md">
+              <div className={`flex items-center gap-4 p-4 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className={`p-3 rounded-full ${isLight ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-400'}`}>
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h3 className={`text-sm font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Location</h3>
+                  <p className={`font-medium ${isLight ? 'text-slate-900' : 'text-white'}`}>Indore, Madhya Pradesh, 452001</p>
+                </div>
+              </div>
+
+              <div className={`flex items-center gap-4 p-4 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className={`p-3 rounded-full ${isLight ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-400'}`}>
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h3 className={`text-sm font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Phone</h3>
+                  <p className={`font-medium ${isLight ? 'text-slate-900' : 'text-white'}`}>+91 7987228496</p>
+                </div>
+              </div>
+
+              <div className={`flex items-center gap-4 p-4 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className={`p-3 rounded-full ${isLight ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-400'}`}>
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <h3 className={`text-sm font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Email</h3>
+                  <a href="mailto:pancholirohit21@gmail.com" className={`font-medium hover:underline ${isLight ? 'text-slate-900' : 'text-white'}`}>pancholirohit21@gmail.com</a>
+                </div>
+              </div>
+
+              <div className={`flex items-center gap-4 p-4 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className={`p-3 rounded-full ${isLight ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-400'}`}>
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <h3 className={`text-sm font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>LinkedIn</h3>
+                  <a href="https://linkedin.com/in/rohit-pancholi" target="_blank" rel="noopener noreferrer" className={`font-medium hover:underline ${isLight ? 'text-slate-900' : 'text-white'}`}>linkedin.com/in/rohit-pancholi</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'education' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className={`text-4xl font-extrabold mb-2 ${isLight ? 'text-slate-900' : 'text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400'}`}>Education</h1>
@@ -122,6 +239,17 @@ export default function Resume() {
               <p className={`leading-relaxed ${isLight ? 'text-slate-600 font-medium' : 'text-slate-300 font-light'}`}>
                 2016 – 2020
               </p>
+            </div>
+            
+            <div className="mt-12">
+              <a 
+                href="/Rohit_Pancholi_Resume.pdf" 
+                download="Rohit_Pancholi_Resume.pdf"
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95 shadow-md ${isLight ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-indigo-500 text-white hover:bg-indigo-600'}`}
+              >
+                <Download size={18} />
+                Download Resume (PDF)
+              </a>
             </div>
           </div>
         )}
@@ -240,6 +368,7 @@ export default function Resume() {
             </div>
           </div>
         )}
+
 
       </div>
     </div>

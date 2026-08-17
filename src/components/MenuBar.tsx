@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 export default function MenuBar() {
   const { themeMode } = useSettingsStore();
-  const { windows, highestZIndex } = useWindowStore();
+  const { windows, highestZIndex, openApp } = useWindowStore();
   const [time, setTime] = useState<string>('');
   const [mounted, setMounted] = useState(false);
 
@@ -45,12 +45,12 @@ export default function MenuBar() {
         </div>
         <div className="font-bold tracking-wide cursor-pointer">{activeAppName}</div>
         <div className="hidden sm:flex space-x-4 opacity-80">
-          <span className="cursor-pointer hover:opacity-100">File</span>
-          <span className="cursor-pointer hover:opacity-100">Edit</span>
-          <span className="cursor-pointer hover:opacity-100">View</span>
-          <span className="cursor-pointer hover:opacity-100">Go</span>
-          <span className="cursor-pointer hover:opacity-100">Window</span>
-          <span className="cursor-pointer hover:opacity-100">Help</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'summary' })), 150); }}>About</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'projects' })), 150); }}>Projects</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'experience' })), 150); }}>Experience</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'skills' })), 150); }}>Skills</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'contact' })), 150); }}>Contact</span>
+          <span className="cursor-pointer hover:opacity-100" onClick={() => openApp('help', 'Help Center')}>Help</span>
         </div>
       </div>
       

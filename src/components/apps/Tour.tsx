@@ -2,51 +2,72 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSettingsStore } from '@/store/useSettingsStore';
-import { ChevronRight, ChevronLeft, Sparkles, Bot, FileText, Languages, Settings, Layout } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, Bot, FileText, Languages, Settings, Layout, UserCircle, Wand2, Wrench, Gamepad2, Video, TerminalSquare, Paintbrush } from 'lucide-react';
 import { useWindowStore } from '@/store/useWindowStore';
 
 const SLIDES = [
   {
     id: 'welcome',
-    title: 'Welcome to Portfolio OS',
-    description: 'Experience a fully interactive, web-based operating system designed to showcase my skills, projects, and personality in a unique way.',
+    title: 'Welcome to My Portfolio!',
+    description: 'This is not a normal website. It is a fully interactive, simulated computer desktop! Feel free to drag windows around, open apps, and explore.',
     icon: Sparkles,
     color: 'text-yellow-500'
   },
   {
+    id: 'resume_projects',
+    title: 'Get to Know Me',
+    description: 'Check out the Resume app to see my professional experience, education, and skills in a beautifully formatted document.',
+    icon: UserCircle,
+    color: 'text-emerald-500'
+  },
+  {
     id: 'chatbot',
-    title: 'Virtual Rohit',
-    description: 'An intelligent AI assistant built right into the OS. You can even use Voice Commands to interact with it directly!',
+    title: 'Meet AI Rohit',
+    description: 'Have a question? Open the Virtual Rohit app to chat with an AI assistant that knows all about me. You can even talk to it using your voice!',
     icon: Bot,
     color: 'text-pink-500'
   },
   {
-    id: 'resume',
-    title: 'Interactive Resume',
-    description: 'View my professional experience, skills, and education in a clean, beautifully formatted document viewer.',
-    icon: FileText,
-    color: 'text-emerald-500'
+    id: 'creative_tools',
+    title: 'Creative Studio',
+    description: 'Try the Image Studio to magically remove backgrounds from photos, or use QR Studio to create your own custom QR codes in seconds.',
+    icon: Wand2,
+    color: 'text-purple-500'
   },
   {
-    id: 'translate',
-    title: 'Real-time Translation',
-    description: 'Test out the built-in translation app that dynamically translates text across multiple languages with a sleek interface.',
-    icon: Languages,
-    color: 'text-blue-500'
+    id: 'utilities',
+    title: 'Handy Utilities',
+    description: 'Need to convert files, check the daily news, translate text, or manage passwords? Explore handy tools like Daily Hub, Format Factory, and Password Hub right here!',
+    icon: Wrench,
+    color: 'text-orange-500'
   },
   {
-    id: 'settings',
-    title: 'Deep Customization',
-    description: 'Make the OS yours. Change themes, pick vibrant accent colors, and choose from gorgeous ultra-HD macOS wallpapers.',
-    icon: Settings,
+    id: 'games',
+    title: 'Time for a Break',
+    description: 'Work hard, play hard. Open up 2048, Snake, or Tic Tac Toe for some quick fun without ever leaving the portfolio.',
+    icon: Gamepad2,
+    color: 'text-red-500'
+  },
+  {
+    id: 'facetime',
+    title: 'Say Hello',
+    description: 'Click on the FaceTime app to start a simulated video call. It is a fun way to feel like we are having a real face-to-face chat!',
+    icon: Video,
+    color: 'text-green-500'
+  },
+  {
+    id: 'developer',
+    title: 'For the Techies',
+    description: 'Are you a developer? Open the Terminal or VS Code to see my actual code and interact with the site using command-line tools.',
+    icon: TerminalSquare,
     color: 'text-slate-500'
   },
   {
-    id: 'windows',
-    title: 'Window Management',
-    description: 'Drag windows around, minimize them to the dock, or maximize them. Enjoy the fluid, physics-based Framer Motion animations.',
-    icon: Layout,
-    color: 'text-purple-500'
+    id: 'customization',
+    title: 'Make it Yours',
+    description: 'Open Settings to change the wallpaper, switch between Dark and Light mode, or pick a new accent color to personalize your experience.',
+    icon: Paintbrush,
+    color: 'text-blue-500'
   }
 ];
 

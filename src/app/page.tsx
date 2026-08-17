@@ -23,6 +23,7 @@ import Tour from '@/components/apps/Tour';
 import Converter from '@/components/apps/Converter';
 import Compressor from '@/components/apps/Compressor';
 import Exchange from '@/components/apps/Exchange';
+import Help from '@/components/apps/Help';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useWindowStore } from '@/store/useWindowStore';
 import { useEffect, useState } from 'react';
@@ -31,7 +32,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [contextMenu, setContextMenu] = useState({ isOpen: false, x: 0, y: 0 });
   const { themeMode, wallpaper, accentColor, customColorHex } = useSettingsStore();
-  const { windows } = useWindowStore();
+  const { windows, openApp } = useWindowStore();
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -46,7 +47,16 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    const hasVisited = localStorage.getItem('hasVisitedBefore');
+    if (!hasVisited) {
+      localStorage.setItem('hasVisitedBefore', 'true');
+      // Adding a slight delay makes the opening animation look smoother
+      setTimeout(() => {
+        openApp('tour', 'Take a Tour');
+      }, 500);
+    }
+  }, [openApp]);
 
   if (!mounted) {
     // Return blank shell for first render to avoid hydration mismatch with localStorage
@@ -172,6 +182,10 @@ export default function Home() {
         
           <DraggableWindow id="exchange" title="Global Exchange" defaultWidth={900} defaultHeight={650}>
             <Exchange />
+          </DraggableWindow>
+
+          <DraggableWindow id="help" title="Help Center" defaultWidth={800} defaultHeight={600}>
+            <Help />
           </DraggableWindow>
 
           <DraggableWindow id="game2048" title="2048" defaultWidth={600} defaultHeight={750}>

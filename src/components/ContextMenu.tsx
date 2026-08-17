@@ -1,7 +1,7 @@
 'use client';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useWindowStore, AppId } from '@/store/useWindowStore';
-import { Terminal, Settings as SettingsIcon, Bot, Languages, Video, FileText } from 'lucide-react';
+import { Terminal, Settings as SettingsIcon, Bot, Languages, Newspaper, FileText } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 interface ContextMenuProps {
@@ -76,9 +76,9 @@ export default function ContextMenu({ x, y, onClose }: ContextMenuProps) {
           isLight={isLight}
         />
         <ContextMenuItem 
-          icon={<Video className="w-4 h-4" />} 
-          label="FaceTime" 
-          onClick={() => handleOpenApp('facetime', 'FaceTime')}
+          icon={<Newspaper className="w-4 h-4" />} 
+          label="Daily Hub" 
+          onClick={() => handleOpenApp('dailyhub', 'Daily Hub')}
           isLight={isLight}
         />
         <ContextMenuItem 

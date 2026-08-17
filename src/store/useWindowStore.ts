@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio';
+export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio' | 'help';
 
 export interface WindowState {
   id: AppId;
@@ -27,6 +27,7 @@ const initialWindows: Record<AppId, WindowState> = {
   projects: { id: 'projects', title: 'Projects', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   facetime: { id: 'facetime', title: 'FaceTime', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   settings: { id: 'settings', title: 'Settings', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  help: { id: 'help', title: 'Help Center', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   vscode: { id: 'vscode', title: 'VS Code', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   translator: { id: 'translator', title: 'AI Translator', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   chatbot: { id: 'chatbot', title: 'Virtual Rohit', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
