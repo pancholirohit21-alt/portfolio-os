@@ -147,7 +147,7 @@ export default function Compressor() {
         ]);
 
         const data = await ffmpeg.readFile(outputName);
-        const blob = new Blob([data], { type: 'video/mp4' });
+        const blob = new Blob([data as any], { type: 'video/mp4' });
         const url = URL.createObjectURL(blob);
 
         setResultUrl(url);
@@ -177,7 +177,7 @@ export default function Compressor() {
         await ffmpeg.exec(args);
 
         const data = await ffmpeg.readFile(outputName);
-        const blob = new Blob([data], { type: 'audio/mpeg' });
+        const blob = new Blob([data as any], { type: 'audio/mpeg' });
         const url = URL.createObjectURL(blob);
 
         setResultUrl(url);

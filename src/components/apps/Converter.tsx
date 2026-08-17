@@ -162,7 +162,7 @@ export default function Converter() {
         
         const data = await ffmpeg.readFile(outputName);
         const mime = selectedTarget === 'mp3' ? 'audio/mpeg' : `audio/${selectedTarget}`;
-        const blob = new Blob([data], { type: mime });
+        const blob = new Blob([data as any], { type: mime });
         triggerDownload(blob, newName);
         setIsConverting(false);
         return;

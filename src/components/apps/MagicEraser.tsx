@@ -197,6 +197,8 @@ export default function MagicEraser() {
             >
               <FilerobotImageEditor
                 source={currentImage}
+                savingPixelRatio={4}
+                previewPixelRatio={1}
                 onSave={(editedImageObject, designState) => {
                   setCurrentImage(editedImageObject.imageBase64 as string);
                   setIsEditing(false);

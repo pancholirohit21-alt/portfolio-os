@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange';
+export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio';
 
 export interface WindowState {
   id: AppId;
@@ -24,6 +24,7 @@ interface OSStore {
 const initialWindows: Record<AppId, WindowState> = {
   terminal: { id: 'terminal', title: 'Terminal', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   resume: { id: 'resume', title: 'Resume.pdf', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  projects: { id: 'projects', title: 'Projects', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   facetime: { id: 'facetime', title: 'FaceTime', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   settings: { id: 'settings', title: 'Settings', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   vscode: { id: 'vscode', title: 'VS Code', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },

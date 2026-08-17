@@ -7,6 +7,7 @@ import { X, Plus, Minus } from 'lucide-react';
 
 interface Props {
   id: AppId;
+  title?: string;
   children: React.ReactNode;
   defaultWidth?: number | string;
   defaultHeight?: number | string;
