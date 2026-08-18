@@ -57,6 +57,10 @@ export async function POST(req: Request) {
 
     // Extract the latest user message
     const latestMessage = formattedHistory.pop();
+    
+    if (!latestMessage) {
+      return NextResponse.json({ error: 'No message provided' }, { status: 400 });
+    }
 
     const model = genAI.getGenerativeModel({ 
       model: 'gemini-flash-latest',
