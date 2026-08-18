@@ -147,7 +147,7 @@ export default function ChatBot() {
           <h2 className="text-xl font-bold tracking-tight">Virtual Rohit</h2>
           <p className={`text-xs flex items-center ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             <span className="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
-            Online • Ask me anything
+            Online • This is a static chat bot
           </p>
         </div>
       </div>

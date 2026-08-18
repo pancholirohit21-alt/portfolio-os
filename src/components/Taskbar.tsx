@@ -19,7 +19,7 @@ const getApps = (isLight: boolean) => [
   { id: 'game2048' as AppId, iconUrl: '/icons/2048.png?v=2', title: '2048' },
   { id: 'tictactoe' as AppId, iconUrl: '/icons/tictactoe.png?v=2', title: 'Tic Tac Toe' },
   { id: 'snake' as AppId, iconUrl: '/icons/snake.png?v=2', title: 'Snake', scale: 1.15 },
-  { id: 'chatbot' as AppId, iconUrl: '/icons/AI_Chat.png?v=2', title: 'Virtual Rohit' },
+  { id: 'aiassistant' as AppId, iconUrl: '/icons/AI_Chat.png?v=2', title: 'AI Assistant' },
   { id: 'dailyhub' as AppId, iconUrl: '/icons/daily-hub.png?v=2', title: 'Daily Hub' },
   { id: 'magiceraser' as AppId, iconUrl: '/icons/Image_editor.png?v=2', title: 'Image Studio' },
   { id: 'qrstudio' as AppId, iconUrl: '/icons/QR-generator.png?v=2', title: 'QR Studio' },

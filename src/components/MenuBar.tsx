@@ -1,7 +1,7 @@
 'use client';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useWindowStore } from '@/store/useWindowStore';
-import { Wifi, BatteryMedium, Search, Command } from 'lucide-react';
+import { Wifi, BatteryMedium, Search, Command, Bot } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function MenuBar() {
@@ -50,6 +50,7 @@ export default function MenuBar() {
           <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'experience' })), 150); }}>Experience</span>
           <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'skills' })), 150); }}>Skills</span>
           <span className="cursor-pointer hover:opacity-100" onClick={() => { openApp('resume', 'Resume.pdf'); setTimeout(() => window.dispatchEvent(new CustomEvent('navigate-resume', { detail: 'contact' })), 150); }}>Contact</span>
+          <span className="cursor-pointer hover:opacity-100 font-semibold text-emerald-400" onClick={() => openApp('chatbot', 'Virtual Rohit')}>Virtual Rohit</span>
           <span className="cursor-pointer hover:opacity-100" onClick={() => openApp('help', 'Help Center')}>Help</span>
         </div>
       </div>

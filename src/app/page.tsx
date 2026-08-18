@@ -24,6 +24,7 @@ import Converter from '@/components/apps/Converter';
 import Compressor from '@/components/apps/Compressor';
 import Exchange from '@/components/apps/Exchange';
 import Help from '@/components/apps/Help';
+import AIAssistant from '@/components/apps/AIAssistant';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useWindowStore } from '@/store/useWindowStore';
 import { useEffect, useState } from 'react';
@@ -162,6 +163,10 @@ export default function Home() {
           {/* VS CODE APP */}
           <DraggableWindow id="vscode" defaultWidth={1050} defaultHeight={700}>
             <VSCode />
+          </DraggableWindow>
+
+          <DraggableWindow id="aiassistant" title="AI Assistant" defaultWidth={500} defaultHeight={650}>
+            <AIAssistant />
           </DraggableWindow>
 
           <DraggableWindow id="translator" title="AI Translator" defaultWidth={700} defaultHeight={550}>

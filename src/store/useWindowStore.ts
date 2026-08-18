@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio' | 'help';
+export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio' | 'help' | 'aiassistant';
 
 export interface WindowState {
   id: AppId;
@@ -31,6 +31,7 @@ const initialWindows: Record<AppId, WindowState> = {
   vscode: { id: 'vscode', title: 'VS Code', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   translator: { id: 'translator', title: 'AI Translator', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   chatbot: { id: 'chatbot', title: 'Virtual Rohit', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  aiassistant: { id: 'aiassistant', title: 'AI Assistant', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   tour: { id: 'tour', title: 'Take a Tour', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   converter: { id: 'converter', title: 'Format Factory', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   compressor: { id: 'compressor', title: 'Compressor', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },

@@ -1,11 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { useWindowStore } from '@/store/useWindowStore';
+
+import ChatBot from '@/components/apps/ChatBot';
 
 export default function Resume() {
   const { themeMode, accentColor } = useSettingsStore();
+  const { openApp } = useWindowStore();
   const isLight = themeMode === 'light';
-  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'projects' | 'skills' | 'education' | 'contact'>('summary');
+  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'projects' | 'skills' | 'education' | 'contact' | 'chat'>('summary');
 
   useEffect(() => {
     const handleNavigate = (e: Event) => {
@@ -20,17 +24,17 @@ export default function Resume() {
 
   const activeTabClass = isLight ? 'bg-indigo-100 text-indigo-700 shadow-inner' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 shadow-inner';
   const inactiveTabClass = isLight ? 'hover:bg-slate-200 text-slate-600' : 'hover:bg-white/5 text-slate-400';
-  const { Download, MapPin, Phone, Mail, Globe } = require('lucide-react');
+  const { Download, MapPin, Phone, Mail, Globe, Bot } = require('lucide-react');
 
   return (
     <div className={`flex h-full transition-colors ${isLight ? 'bg-slate-50/90 text-slate-900' : 'bg-slate-900/40 text-white'}`}>
       {/* Sidebar */}
-      <div className={`w-64 border-r p-6 flex flex-col shadow-2xl transition-colors shrink-0 ${isLight ? 'bg-white/60 border-slate-200' : 'bg-black/60 border-white/5'}`}>
-        <div className={`w-40 h-40 rounded-full bg-gradient-to-br ${accentColor} mx-auto mb-4 p-1 shadow-lg relative overflow-hidden`}>
+      <div className={`w-64 border-r p-4 pb-6 flex flex-col shadow-2xl transition-colors shrink-0 overflow-y-auto ${isLight ? 'bg-white/60 border-slate-200' : 'bg-black/60 border-white/5'}`}>
+        <div className={`w-32 h-32 shrink-0 rounded-full bg-gradient-to-br ${accentColor} mx-auto mb-3 p-1 shadow-lg relative overflow-hidden`}>
           <img src="/profile.jpeg" alt="Rohit Pancholi" className="w-full h-full rounded-full object-cover object-top" />
         </div>
         <h2 className="text-center font-bold text-lg tracking-wide">Rohit Pancholi</h2>
-        <p className={`text-center text-[10px] font-bold tracking-[0.2em] uppercase mb-8 mt-1 ${isLight ? 'text-indigo-600' : 'text-indigo-300'}`}>Senior Developer</p>
+        <p className={`text-center text-[10px] font-bold tracking-[0.2em] uppercase mb-4 mt-1 ${isLight ? 'text-indigo-600' : 'text-indigo-300'}`}>Senior Developer</p>
 
         <nav className="space-y-1.5 text-sm font-medium">
           <button
@@ -70,11 +74,21 @@ export default function Resume() {
           >
             Education
           </button>
+          <button
+            onClick={() => setActiveTab('chat')}
+            className={`w-full flex items-center justify-between text-left px-4 py-2.5 rounded-lg transition-all ${activeTab === 'chat' ? activeTabClass : inactiveTabClass}`}
+          >
+            Virtual Rohit
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+          </button>
         </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10 overflow-y-auto">
+      <div className={`flex-1 flex flex-col relative ${activeTab === 'chat' ? 'overflow-hidden p-0' : 'overflow-y-auto p-10'}`}>
 
         {activeTab === 'summary' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -173,6 +187,15 @@ export default function Resume() {
               <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
                 <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>Methodology & Domain</h3>
                 <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}><strong>Methodology:</strong> Agile / Scrum / Waterfall<br/><br/><strong>Domain Expertise:</strong> Insurance, Fintech, HRMS, Education, ERP, Casino/iGaming</p>
+              </div>
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>AI Model Integration</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>OpenAI, Google Gemini, and any other LLMs available in the market</p>
+              </div>
+
+              <div className={`p-5 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <h3 className={`text-lg font-bold mb-3 ${isLight ? 'text-slate-900' : 'text-white'}`}>AI Powered Development</h3>
+                <p className={`text-sm leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Antigravity, Copilot, Claude, Tray, Codex, Cursor</p>
               </div>
             </div>
           </div>
@@ -370,6 +393,11 @@ export default function Resume() {
         )}
 
 
+        {activeTab === 'chat' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 h-full w-full">
+            <ChatBot />
+          </div>
+        )}
       </div>
     </div>
   );

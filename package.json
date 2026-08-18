@@ -13,6 +13,7 @@
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
+    "@google/generative-ai": "^0.24.1",
     "@imgly/background-removal": "^1.7.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "browser-image-compression": "^2.0.2",
