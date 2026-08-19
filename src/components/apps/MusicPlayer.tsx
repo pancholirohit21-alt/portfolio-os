@@ -125,7 +125,7 @@ const MusicPlayer: React.FC = () => {
       event.target.nextVideo();
     } else {
       console.error('YouTube Player Error:', event.data);
-      setTrackInfo({ title: 'Playback Error', artist: 'Please try another playlist' });
+      setTrackInfo({ title: 'Playback Error', artist: 'Please try another playlist', videoId: '' });
       setIsPlaying(false);
     }
   };

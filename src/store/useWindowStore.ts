@@ -48,6 +48,7 @@ const initialWindows: Record<AppId, WindowState> = {
   devtools: { id: 'devtools', title: 'DevTools', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   cryptostudio: { id: 'cryptostudio', title: 'Password Hub', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   gameshub: { id: 'gameshub', title: 'Games Hub', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  launchpad: { id: 'launchpad', title: 'Launchpad', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   musicplayer: { id: 'musicplayer', title: 'Music Player', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
 };
 
