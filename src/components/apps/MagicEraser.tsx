@@ -24,10 +24,14 @@ export default function MagicEraser() {
 
   useEffect(() => {
     if (isEditing) {
-      // Suppress the known 'active' attribute warning from react-filerobot-image-editor
+      // Suppress the known attribute warnings from react-filerobot-image-editor
       const originalError = console.error;
       console.error = (...args) => {
-        if (typeof args[0] === 'string' && args[0].includes('for a non-boolean attribute `active`')) {
+        if (typeof args[0] === 'string' && (
+          args[0].includes('for a non-boolean attribute `active`') ||
+          args[0].includes('styled-components: it looks like an unknown prop') ||
+          args[0].includes('React does not recognize the')
+        )) {
           return;
         }
         originalError.call(console, ...args);

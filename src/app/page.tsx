@@ -4,9 +4,9 @@ import DraggableWindow from '@/components/DraggableWindow';
 import ContextMenu from '@/components/ContextMenu';
 import MenuBar from '@/components/MenuBar';
 import DesktopIcons from '@/components/DesktopIcons';
+import Launchpad from '@/components/Launchpad';
 import FaceTime from '@/components/apps/FaceTime';
 import Settings, { WALLPAPERS } from '@/components/apps/Settings';
-import VSCode from '@/components/apps/VSCode';
 import Resume from '@/components/apps/Resume';
 import Translator from '@/components/apps/Translator';
 import ChatBot from '@/components/apps/ChatBot';
@@ -15,6 +15,8 @@ import TicTacToe from '@/components/apps/TicTacToe';
 import Snake from '@/components/apps/Snake';
 import DailyHub from '@/components/apps/DailyHub';
 import MagicEraser from '@/components/apps/MagicEraser';
+import TypingGame from '@/components/apps/TypingGame';
+import GamesHub from '@/components/apps/GamesHub';
 import QRStudio from '@/components/apps/QRStudio';
 import DevTools from '@/components/apps/DevTools';
 import CryptoStudio from '@/components/apps/CryptoStudio';
@@ -25,6 +27,7 @@ import Compressor from '@/components/apps/Compressor';
 import Exchange from '@/components/apps/Exchange';
 import Help from '@/components/apps/Help';
 import AIAssistant from '@/components/apps/AIAssistant';
+import MusicPlayer from '@/components/apps/MusicPlayer';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useWindowStore } from '@/store/useWindowStore';
 import { useEffect, useState } from 'react';
@@ -161,9 +164,7 @@ export default function Home() {
           </DraggableWindow>
 
           {/* VS CODE APP */}
-          <DraggableWindow id="vscode" defaultWidth={1050} defaultHeight={700}>
-            <VSCode />
-          </DraggableWindow>
+
 
           <DraggableWindow id="aiassistant" title="AI Assistant" defaultWidth={500} defaultHeight={650}>
             <AIAssistant />
@@ -173,7 +174,7 @@ export default function Home() {
             <Translator />
           </DraggableWindow>
 
-          <DraggableWindow id="tour" title="Take a Tour" defaultWidth={700} defaultHeight={500}>
+          <DraggableWindow id="tour" title="Take a Tour" defaultWidth={700} defaultHeight={500} defaultX="5%" defaultY="10%">
             <Tour />
           </DraggableWindow>
 
@@ -193,6 +194,10 @@ export default function Home() {
             <Help />
           </DraggableWindow>
 
+          <DraggableWindow id="musicplayer" title="Music Player" defaultWidth={800} defaultHeight={650}>
+            <MusicPlayer />
+          </DraggableWindow>
+
           <DraggableWindow id="game2048" title="2048" defaultWidth={600} defaultHeight={750}>
             <Game2048 />
           </DraggableWindow>
@@ -204,6 +209,12 @@ export default function Home() {
           <DraggableWindow id="snake" title="Snake" defaultWidth={500} defaultHeight={650}>
             <Snake />
           </DraggableWindow>
+
+          <DraggableWindow id="typinggame" title="DevType" defaultWidth={900} defaultHeight={600}>
+            <TypingGame />
+          </DraggableWindow>
+
+          <GamesHub />
 
           <DraggableWindow id="dailyhub" title="Daily Hub" defaultWidth={800} defaultHeight={600}>
             <DailyHub />
@@ -233,6 +244,7 @@ export default function Home() {
         </div>
 
         <Taskbar />
+        <Launchpad />
       </div>
     </main>
   );

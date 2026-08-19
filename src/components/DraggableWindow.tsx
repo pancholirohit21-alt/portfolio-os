@@ -11,9 +11,11 @@ interface Props {
   children: React.ReactNode;
   defaultWidth?: number | string;
   defaultHeight?: number | string;
+  defaultX?: string;
+  defaultY?: string;
 }
 
-export default function DraggableWindow({ id, children, defaultWidth = 750, defaultHeight = 500 }: Props) {
+export default function DraggableWindow({ id, children, defaultWidth = 750, defaultHeight = 500, defaultX = '20%', defaultY = '10%' }: Props) {
   const windowState = useWindowStore((state) => state.windows[id]);
   const { closeApp, minimizeApp, maximizeApp, focusApp } = useWindowStore();
   const { themeMode, taskbarVisible } = useSettingsStore();
@@ -37,8 +39,8 @@ export default function DraggableWindow({ id, children, defaultWidth = 750, defa
         y: 0,
         width: windowState.isMaximized ? '100vw' : defaultWidth,
         height: windowState.isMaximized ? (taskbarVisible ? 'calc(100vh - 110px)' : '100vh') : defaultHeight,
-        top: windowState.isMaximized ? 0 : '10%',
-        left: windowState.isMaximized ? 0 : '20%',
+        top: windowState.isMaximized ? 0 : defaultY,
+        left: windowState.isMaximized ? 0 : defaultX,
       }}
       exit={{ scale: 0.9, opacity: 0, y: 20 }}
       transition={{ type: 'spring', damping: 25, stiffness: 250 }}

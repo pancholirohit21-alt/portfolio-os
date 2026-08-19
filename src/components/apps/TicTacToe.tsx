@@ -63,29 +63,37 @@ export default function TicTacToe() {
   const [isXNext, setIsXNext] = useState<boolean>(true);
   const [winner, setWinner] = useState<Player | 'draw' | null>(null);
   const [score, setScore] = useState({ player: 0, ai: 0, draws: 0 });
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('hard');
 
   // AI Turn
   useEffect(() => {
     if (!isXNext && !winner) {
       // Simulate thinking delay
       const timeout = setTimeout(() => {
-        let bestScore = -Infinity;
         let move = -1;
-        const tempBoard = [...board];
+        const availableMoves = board.map((c, i) => c === null ? i : -1).filter(i => i !== -1);
         
-        // If it's the very first move of the game, pick a random corner/center for variety
-        if (board.filter(cell => cell === null).length === 9) {
-          const openers = [0, 2, 4, 6, 8];
-          move = openers[Math.floor(Math.random() * openers.length)];
+        if (difficulty === 'easy' || (difficulty === 'medium' && Math.random() < 0.5)) {
+           // Random move
+           move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
         } else {
-          for (let i = 0; i < 9; i++) {
-            if (tempBoard[i] === null) {
-              tempBoard[i] = 'O';
-              let score = minimax(tempBoard, 0, false);
-              tempBoard[i] = null;
-              if (score > bestScore) {
-                bestScore = score;
-                move = i;
+          // Hard move: Minimax
+          // If it's the very first move of the game, pick a random corner/center for variety
+          if (availableMoves.length === 9) {
+            const openers = [0, 2, 4, 6, 8];
+            move = openers[Math.floor(Math.random() * openers.length)];
+          } else {
+            let bestScore = -Infinity;
+            const tempBoard = [...board];
+            for (let i = 0; i < 9; i++) {
+              if (tempBoard[i] === null) {
+                tempBoard[i] = 'O';
+                let score = minimax(tempBoard, 0, false);
+                tempBoard[i] = null;
+                if (score > bestScore) {
+                  bestScore = score;
+                  move = i;
+                }
               }
             }
           }
@@ -97,7 +105,7 @@ export default function TicTacToe() {
       }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [isXNext, board, winner]);
+  }, [isXNext, board, winner, difficulty]);
 
   const handlePlay = (index: number) => {
     if (board[index] || winner) return;
@@ -154,21 +162,39 @@ export default function TicTacToe() {
       <div className="w-full max-w-[450px] p-8 flex-1 flex flex-col justify-center relative">
         
         {/* Header & Score */}
-        <div className="flex justify-between items-center mb-10">
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-extrabold tracking-tight">Tic Tac Toe</h1>
-            <p className={`text-sm font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>vs Minimax AI</p>
+        <div className="flex flex-col gap-6 mb-10">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <h1 className="text-3xl font-extrabold tracking-tight">Tic Tac Toe</h1>
+              <p className={`text-sm font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>vs AI</p>
+            </div>
+            
+            <div className="flex gap-4">
+              <div className={`flex flex-col items-center px-4 py-2 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className="flex items-center gap-1 text-xs font-bold uppercase text-slate-500 mb-1"><User size={12}/> You</div>
+                <span className="text-xl font-bold">{score.player}</span>
+              </div>
+              <div className={`flex flex-col items-center px-4 py-2 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
+                <div className="flex items-center gap-1 text-xs font-bold uppercase text-slate-500 mb-1"><Bot size={12}/> AI</div>
+                <span className="text-xl font-bold">{score.ai}</span>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex gap-4">
-            <div className={`flex flex-col items-center px-4 py-2 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
-              <div className="flex items-center gap-1 text-xs font-bold uppercase text-slate-500 mb-1"><User size={12}/> You</div>
-              <span className="text-xl font-bold">{score.player}</span>
-            </div>
-            <div className={`flex flex-col items-center px-4 py-2 rounded-xl border ${isLight ? 'bg-white border-slate-200' : 'bg-white/5 border-white/10'}`}>
-              <div className="flex items-center gap-1 text-xs font-bold uppercase text-slate-500 mb-1"><Bot size={12}/> AI</div>
-              <span className="text-xl font-bold">{score.ai}</span>
-            </div>
+
+          {/* Difficulty Selector */}
+          <div className={`flex p-1 rounded-xl border shadow-sm ${isLight ? 'bg-slate-100/50 border-slate-200' : 'bg-black/20 border-white/10'}`}>
+            {(['easy', 'medium', 'hard'] as const).map(level => (
+              <button
+                key={level}
+                onClick={() => setDifficulty(level)}
+                className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-300
+                  ${difficulty === level 
+                    ? `bg-gradient-to-r ${accentColor} text-white shadow-md` 
+                    : (isLight ? 'text-slate-500 hover:bg-white hover:shadow-sm' : 'text-slate-400 hover:bg-white/10')}`}
+              >
+                {level}
+              </button>
+            ))}
           </div>
         </div>
 

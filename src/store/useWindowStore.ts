@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'vscode' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio' | 'help' | 'aiassistant';
+export type AppId = 'terminal' | 'resume' | 'projects' | 'facetime' | 'settings' | 'translator' | 'chatbot' | 'tour' | 'converter' | 'compressor' | 'exchange' | 'game2048' | 'tictactoe' | 'snake' | 'dailyhub' | 'magiceraser' | 'qrstudio' | 'devtools' | 'cryptostudio' | 'help' | 'aiassistant' | 'typinggame' | 'gameshub' | 'launchpad' | 'musicplayer';
 
 export interface WindowState {
   id: AppId;
@@ -14,11 +14,14 @@ export interface WindowState {
 interface OSStore {
   windows: Record<AppId, WindowState>;
   highestZIndex: number;
+  isLaunchpadOpen: boolean;
   openApp: (id: AppId, title: string) => void;
   closeApp: (id: AppId) => void;
   minimizeApp: (id: AppId) => void;
   maximizeApp: (id: AppId) => void;
   focusApp: (id: AppId) => void;
+  toggleLaunchpad: () => void;
+  closeLaunchpad: () => void;
 }
 
 const initialWindows: Record<AppId, WindowState> = {
@@ -28,7 +31,6 @@ const initialWindows: Record<AppId, WindowState> = {
   facetime: { id: 'facetime', title: 'FaceTime', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   settings: { id: 'settings', title: 'Settings', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   help: { id: 'help', title: 'Help Center', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
-  vscode: { id: 'vscode', title: 'VS Code', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   translator: { id: 'translator', title: 'AI Translator', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   chatbot: { id: 'chatbot', title: 'Virtual Rohit', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   aiassistant: { id: 'aiassistant', title: 'AI Assistant', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
@@ -41,14 +43,18 @@ const initialWindows: Record<AppId, WindowState> = {
   snake: { id: 'snake', title: 'Snake', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   dailyhub: { id: 'dailyhub', title: 'Daily Hub', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   magiceraser: { id: 'magiceraser', title: 'Image Studio', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  typinggame: { id: 'typinggame', title: 'DevType', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   qrstudio: { id: 'qrstudio', title: 'QR Studio', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   devtools: { id: 'devtools', title: 'DevTools', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   cryptostudio: { id: 'cryptostudio', title: 'Password Hub', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  gameshub: { id: 'gameshub', title: 'Games Hub', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
+  musicplayer: { id: 'musicplayer', title: 'Music Player', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
 };
 
 export const useWindowStore = create<OSStore>((set) => ({
   windows: initialWindows,
   highestZIndex: 100,
+  isLaunchpadOpen: false,
 
   openApp: (id, title) => set((state) => {
     const newZ = state.highestZIndex + 1;
@@ -95,4 +101,7 @@ export const useWindowStore = create<OSStore>((set) => ({
       },
     };
   }),
+
+  toggleLaunchpad: () => set((state) => ({ isLaunchpadOpen: !state.isLaunchpadOpen })),
+  closeLaunchpad: () => set({ isLaunchpadOpen: false }),
 }));

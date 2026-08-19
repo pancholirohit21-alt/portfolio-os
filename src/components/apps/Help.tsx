@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useSettingsStore } from '@/store/useSettingsStore';
-import { MousePointer2, Maximize2, XCircle, MinusCircle, PlusCircle, Settings as SettingsIcon, GripHorizontal, ArrowRight } from 'lucide-react';
+import { MousePointer2, Maximize2, XCircle, MinusCircle, PlusCircle, Settings as SettingsIcon, GripHorizontal, ArrowRight, Music } from 'lucide-react';
 
 const GUIDE_SECTIONS = [
   {
@@ -70,6 +70,17 @@ const GUIDE_SECTIONS = [
     content: (
       <p>
         Want to make it yours? Open the <strong>Settings app</strong> to switch between Dark Mode and Light Mode, choose a new HD wallpaper, or pick a vibrant custom accent color for the whole system!
+      </p>
+    )
+  },
+  {
+    title: 'Media & Entertainment',
+    icon: Music,
+    color: 'text-indigo-500',
+    bgColor: 'bg-indigo-500/10',
+    content: (
+      <p>
+        Need to focus or relax? Open the <strong>Music Player</strong> to listen to curated YouTube playlists in the background. You can also use the <strong>Compressor</strong> to quickly reduce the size of your images, videos, and audio files right in the browser!
       </p>
     )
   }

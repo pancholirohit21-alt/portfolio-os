@@ -33,6 +33,7 @@
     "react-dom": "19.2.8",
     "react-filerobot-image-editor": "^5.0.0-beta.159",
     "react-syntax-highlighter": "^16.1.1",
+    "react-youtube": "^10.1.0",
     "xlsx": "^0.18.5",
     "zustand": "^5.0.14",
     "zxcvbn": "^4.4.2"

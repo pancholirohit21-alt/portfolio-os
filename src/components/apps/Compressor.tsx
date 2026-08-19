@@ -162,9 +162,9 @@ export default function Compressor() {
         const outputName = `output.mp3`; // Always compress to mp3
 
         await ffmpeg.writeFile(inputName, await fetchFile(file));
-        
+
         const args = ['-i', inputName, '-b:a', audioBitrate];
-        
+
         // For aggressive compression, downmix to mono and reduce sample rate
         if (['64k', '32k', '16k'].includes(audioBitrate)) {
           args.push('-ac', '1'); // Mono
@@ -210,7 +210,7 @@ export default function Compressor() {
         </div>
         <div>
           <h2 className="text-xl font-bold">Compressor</h2>
-          <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Image & Video Optimizer</p>
+          <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Image, Audio & Video Optimizer</p>
         </div>
       </div>
 
@@ -297,9 +297,9 @@ export default function Compressor() {
                         }}
                       />
                     ) : (
-                      <audio 
-                        src={previewUrl} 
-                        controls 
+                      <audio
+                        src={previewUrl}
+                        controls
                         className="w-full px-4"
                         onLoadedMetadata={(e) => {
                           const target = e.currentTarget as HTMLAudioElement;

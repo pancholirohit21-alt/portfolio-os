@@ -14,7 +14,7 @@ export default function DesktopIcons() {
   const isLight = themeMode === 'light';
 
   return (
-    <div className="absolute top-4 right-4 flex flex-col gap-6 p-4 z-0">
+    <div className="absolute top-4 left-4 flex flex-col gap-6 p-4 z-0">
       {icons.map((icon) => (
         <motion.div 
           key={icon.id}

@@ -5,27 +5,7 @@ import { Terminal, FileText, Briefcase, Video, Settings as SettingsIcon, Code2, 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-
-const getApps = (isLight: boolean) => [
-  { id: 'terminal' as AppId, iconUrl: '/icons/Terminal.png?v=2', title: 'Terminal' },
-  { id: 'vscode' as AppId, iconUrl: `/icons/VS_Code-${isLight ? 'light' : 'dark'}.png?v=2`, title: 'VS Code' },
-  { id: 'resume' as AppId, iconUrl: `/icons/Resume-${isLight ? 'light' : 'dark'}.png?v=2`, title: 'Resume' },
-  { id: 'facetime' as AppId, iconUrl: '/icons/Facetime.png?v=2', title: 'FaceTime' },
-  { id: 'settings' as AppId, iconUrl: '/icons/Settings.png?v=2', title: 'Settings' },
-  { id: 'translator' as AppId, iconUrl: '/icons/Translate.png?v=2', title: 'Translator' },
-  { id: 'converter' as AppId, iconUrl: '/icons/format.png?v=2', title: 'Format Factory' },
-  { id: 'compressor' as AppId, iconUrl: '/icons/compressor.png?v=2', title: 'Compressor' },
-  { id: 'exchange' as AppId, iconUrl: '/icons/currency_convert.png?v=2', title: 'Global Exchange' },
-  { id: 'game2048' as AppId, iconUrl: '/icons/2048.png?v=2', title: '2048' },
-  { id: 'tictactoe' as AppId, iconUrl: '/icons/tictactoe.png?v=2', title: 'Tic Tac Toe' },
-  { id: 'snake' as AppId, iconUrl: '/icons/snake.png?v=2', title: 'Snake', scale: 1.15 },
-  { id: 'aiassistant' as AppId, iconUrl: '/icons/AI_Chat.png?v=2', title: 'AI Assistant' },
-  { id: 'dailyhub' as AppId, iconUrl: '/icons/daily-hub.png?v=2', title: 'Daily Hub' },
-  { id: 'magiceraser' as AppId, iconUrl: '/icons/Image_editor.png?v=2', title: 'Image Studio' },
-  { id: 'qrstudio' as AppId, iconUrl: '/icons/QR-generator.png?v=2', title: 'QR Studio' },
-  { id: 'devtools' as AppId, iconUrl: '/icons/dev-tool.png?v=2', title: 'DevTools' },
-  { id: 'cryptostudio' as AppId, iconUrl: `/icons/Passwords-${isLight ? 'light' : 'dark'}.png?v=2`, title: 'Password Hub' },
-];
+import { getTaskbarApps } from '@/data/apps';
 
 export default function Taskbar() {
   const { windows, openApp, minimizeApp, focusApp, highestZIndex } = useWindowStore();
@@ -33,7 +13,7 @@ export default function Taskbar() {
   const [mounted, setMounted] = useState(false);
   
   const isLight = themeMode === 'light';
-  const apps = getApps(isLight);
+  const apps = getTaskbarApps(isLight);
   
   const mouseX = useMotionValue(Infinity);
 
@@ -42,6 +22,11 @@ export default function Taskbar() {
   }, []);
 
   const handleAppClick = (id: AppId, title: string) => {
+    if (id === 'launchpad') {
+      useWindowStore.getState().toggleLaunchpad();
+      return;
+    }
+
     const win = windows[id];
     if (!win.isOpen) {
       openApp(id, title);

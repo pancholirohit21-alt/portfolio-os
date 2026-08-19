@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSettingsStore } from '@/store/useSettingsStore';
-import { ChevronRight, ChevronLeft, Sparkles, Bot, FileText, Languages, Settings, Layout, UserCircle, Wand2, Wrench, Gamepad2, Video, TerminalSquare, Paintbrush } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, Bot, FileText, Languages, Settings, Layout, UserCircle, Wand2, Wrench, Gamepad2, Video, TerminalSquare, Paintbrush, Music } from 'lucide-react';
 import { useWindowStore } from '@/store/useWindowStore';
 
 const SLIDES = [
@@ -37,9 +37,16 @@ const SLIDES = [
   {
     id: 'utilities',
     title: 'Handy Utilities',
-    description: 'Need to convert files, check the daily news, translate text, or manage passwords? Explore handy tools like Daily Hub, Format Factory, and Password Hub right here!',
+    description: 'Need to convert files, check the daily news, compress media, or manage passwords? Explore handy tools like Daily Hub, Format Factory, Compressor, and Password Hub right here!',
     icon: Wrench,
     color: 'text-orange-500'
+  },
+  {
+    id: 'music_player',
+    title: 'Listen to Music',
+    description: 'Vibe while you work. Open the Music Player to listen to curated YouTube playlists instantly right inside the OS.',
+    icon: Music,
+    color: 'text-indigo-500'
   },
   {
     id: 'games',
@@ -58,7 +65,7 @@ const SLIDES = [
   {
     id: 'developer',
     title: 'For the Techies',
-    description: 'Are you a developer? Open the Terminal or VS Code to see my actual code and interact with the site using command-line tools.',
+    description: 'Are you a developer? Open the Terminal to see my actual code and interact with the site using command-line tools.',
     icon: TerminalSquare,
     color: 'text-slate-500'
   },
