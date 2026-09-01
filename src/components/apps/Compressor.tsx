@@ -165,10 +165,10 @@ export default function Compressor() {
           if (!ffmpegLoaded) await loadFfmpeg();
           const ffmpeg = ffmpegRef.current;
           
-          ffmpeg.off('progress');
-          ffmpeg.on('progress', ({ progress }) => {
+          const progressHandler = ({ progress }: any) => {
             updateItem({ progress: Math.round(progress * 100) });
-          });
+          };
+          ffmpeg.on('progress', progressHandler);
 
           const inputName = `input_${item.id}.${item.extension}`;
           const outputName = `output_${item.id}.mp4`;
@@ -185,6 +185,8 @@ export default function Compressor() {
             outputName
           ]);
 
+          ffmpeg.off('progress', progressHandler);
+
           const data = await ffmpeg.readFile(outputName);
           const blob = new Blob([data as any], { type: 'video/mp4' });
           const url = URL.createObjectURL(blob);
@@ -200,10 +202,10 @@ export default function Compressor() {
           if (!ffmpegLoaded) await loadFfmpeg();
           const ffmpeg = ffmpegRef.current;
           
-          ffmpeg.off('progress');
-          ffmpeg.on('progress', ({ progress }) => {
+          const progressHandler = ({ progress }: any) => {
             updateItem({ progress: Math.round(progress * 100) });
-          });
+          };
+          ffmpeg.on('progress', progressHandler);
 
           const inputName = `input_${item.id}.${item.extension}`;
           const outputName = `output_${item.id}.mp3`;
@@ -217,6 +219,8 @@ export default function Compressor() {
           args.push(outputName);
 
           await ffmpeg.exec(args);
+
+          ffmpeg.off('progress', progressHandler);
 
           const data = await ffmpeg.readFile(outputName);
           const blob = new Blob([data as any], { type: 'audio/mpeg' });
