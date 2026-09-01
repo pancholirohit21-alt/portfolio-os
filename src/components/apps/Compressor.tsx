@@ -79,16 +79,34 @@ export default function Compressor() {
     const newItems: QueueItem[] = [];
     let hasVideoOrAudio = false;
 
+    // Determine the active batch type
+    let currentBatchType = queue.length > 0 ? queue[0].type : null;
+    let ignoredFiles = false;
+
     Array.from(files).forEach((f) => {
       const ext = f.name.split('.').pop()?.toLowerCase() || '';
       if (!ALLOWED_EXTS.includes(ext)) return;
 
       let type: 'image' | 'video' | 'audio' | null = null;
       if (IMAGE_EXTS.includes(ext)) type = 'image';
-      else if (VIDEO_EXTS.includes(ext)) { type = 'video'; hasVideoOrAudio = true; }
-      else if (AUDIO_EXTS.includes(ext)) { type = 'audio'; hasVideoOrAudio = true; }
+      else if (VIDEO_EXTS.includes(ext)) type = 'video';
+      else if (AUDIO_EXTS.includes(ext)) type = 'audio';
 
       if (type) {
+        // Lock the batch to the first valid file type
+        if (!currentBatchType) {
+          currentBatchType = type;
+        }
+
+        if (type !== currentBatchType) {
+          ignoredFiles = true;
+          return; // Skip this file as it doesn't match the current batch type
+        }
+
+        if (type === 'video' || type === 'audio') {
+          hasVideoOrAudio = true;
+        }
+
         newItems.push({
           id: Math.random().toString(36).substring(7),
           file: f,
@@ -101,6 +119,10 @@ export default function Compressor() {
         });
       }
     });
+
+    if (ignoredFiles) {
+      setGlobalError(`Some files were ignored. You can only compress multiple ${currentBatchType}s in a single batch.`);
+    }
 
     if (newItems.length > 0) {
       setQueue(prev => [...prev, ...newItems]);
@@ -256,6 +278,7 @@ export default function Compressor() {
 
   const hasPending = queue.some(q => q.status === 'pending');
   const hasVideoOrAudio = queue.some(q => q.type === 'video' || q.type === 'audio');
+  const currentBatchType = queue.length > 0 ? queue[0].type : null;
 
   return (
     <div className={`flex flex-col h-full w-full ${isLight ? 'bg-slate-50 text-slate-800' : 'bg-[#0d1117] text-white'}`}>
@@ -280,60 +303,66 @@ export default function Compressor() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Quality Slider (Images & Video CRF) */}
-              <div className="col-span-1">
-                <div className="flex justify-between mb-2 items-end">
-                  <label className={`block text-sm font-medium ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Quality Target</label>
-                  <span className={`text-sm font-bold ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{Math.round(quality * 100)}%</span>
+              {(!currentBatchType || currentBatchType === 'image' || currentBatchType === 'video') && (
+                <div className="col-span-1">
+                  <div className="flex justify-between mb-2 items-end">
+                    <label className={`block text-sm font-medium ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Quality Target</label>
+                    <span className={`text-sm font-bold ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{Math.round(quality * 100)}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.1" max="1" step="0.1"
+                    value={quality}
+                    onChange={(e) => setQuality(parseFloat(e.target.value))}
+                    className="w-full accent-amber-500"
+                    disabled={isCompressing}
+                  />
+                  <div className="flex justify-between text-xs text-slate-500 mt-1">
+                    <span>Smallest Size</span>
+                    <span>Highest Quality</span>
+                  </div>
                 </div>
-                <input
-                  type="range"
-                  min="0.1" max="1" step="0.1"
-                  value={quality}
-                  onChange={(e) => setQuality(parseFloat(e.target.value))}
-                  className="w-full accent-amber-500"
-                  disabled={isCompressing}
-                />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
-                  <span>Smallest Size</span>
-                  <span>Highest Quality</span>
-                </div>
-              </div>
+              )}
 
               {/* Video Resolution */}
-              <div className="col-span-1">
-                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Video Max Resolution</label>
-                <select
-                  value={videoResolution}
-                  onChange={(e) => setVideoResolution(e.target.value)}
-                  disabled={isCompressing}
-                  className={`w-full p-2.5 rounded-lg border outline-none font-medium appearance-none
-                    ${isLight ? 'bg-slate-50 border-slate-300 focus:border-amber-500' : 'bg-black/40 border-white/20 focus:border-amber-500'}`}
-                >
-                  <option value="1920x1080">1080p (FHD)</option>
-                  <option value="1280x720">720p (HD)</option>
-                  <option value="854x480">480p (SD)</option>
-                  <option value="640x360">360p (Low)</option>
-                </select>
-              </div>
+              {currentBatchType === 'video' && (
+                <div className="col-span-1">
+                  <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Video Max Resolution</label>
+                  <select
+                    value={videoResolution}
+                    onChange={(e) => setVideoResolution(e.target.value)}
+                    disabled={isCompressing}
+                    className={`w-full p-2.5 rounded-lg border outline-none font-medium appearance-none
+                      ${isLight ? 'bg-slate-50 border-slate-300 focus:border-amber-500' : 'bg-black/40 border-white/20 focus:border-amber-500'}`}
+                  >
+                    <option value="1920x1080">1080p (FHD)</option>
+                    <option value="1280x720">720p (HD)</option>
+                    <option value="854x480">480p (SD)</option>
+                    <option value="640x360">360p (Low)</option>
+                  </select>
+                </div>
+              )}
 
               {/* Audio Bitrate */}
-              <div className="col-span-1">
-                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Audio Bitrate</label>
-                <select
-                  value={audioBitrate}
-                  onChange={(e) => setAudioBitrate(e.target.value)}
-                  disabled={isCompressing}
-                  className={`w-full p-2.5 rounded-lg border outline-none font-medium appearance-none
-                    ${isLight ? 'bg-slate-50 border-slate-300 focus:border-amber-500' : 'bg-black/40 border-white/20 focus:border-amber-500'}`}
-                >
-                  <option value="320k">320 kbps (High)</option>
-                  <option value="256k">256 kbps (Good)</option>
-                  <option value="192k">192 kbps (Standard)</option>
-                  <option value="128k">128 kbps (Compression)</option>
-                  <option value="96k">96 kbps (High Comp)</option>
-                  <option value="64k">64 kbps (Max Comp)</option>
-                </select>
-              </div>
+              {currentBatchType === 'audio' && (
+                <div className="col-span-1">
+                  <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Audio Bitrate</label>
+                  <select
+                    value={audioBitrate}
+                    onChange={(e) => setAudioBitrate(e.target.value)}
+                    disabled={isCompressing}
+                    className={`w-full p-2.5 rounded-lg border outline-none font-medium appearance-none
+                      ${isLight ? 'bg-slate-50 border-slate-300 focus:border-amber-500' : 'bg-black/40 border-white/20 focus:border-amber-500'}`}
+                  >
+                    <option value="320k">320 kbps (High)</option>
+                    <option value="256k">256 kbps (Good)</option>
+                    <option value="192k">192 kbps (Standard)</option>
+                    <option value="128k">128 kbps (Compression)</option>
+                    <option value="96k">96 kbps (High Comp)</option>
+                    <option value="64k">64 kbps (Max Comp)</option>
+                  </select>
+                </div>
+              )}
             </div>
             
             {hasPending && (
@@ -384,9 +413,13 @@ export default function Compressor() {
             onChange={(e) => e.target.files && handleFilesSelect(e.target.files)}
           />
           <UploadCloud size={40} className={`mb-3 ${isLight ? 'text-slate-400' : 'text-slate-500'}`} />
-          <p className="text-lg font-medium mb-1">Add More Files</p>
+          <p className="text-lg font-medium mb-1">
+            {currentBatchType ? `Add More ${currentBatchType.charAt(0).toUpperCase() + currentBatchType.slice(1)}s` : 'Add Media Files'}
+          </p>
           <p className={`text-sm text-center max-w-sm ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Select multiple images, videos, or audio files.
+            {currentBatchType 
+              ? `Select multiple ${currentBatchType}s (do not mix with other types).` 
+              : 'Select multiple images, videos, OR audio files (do not mix types in a single batch).'}
           </p>
         </div>
 
