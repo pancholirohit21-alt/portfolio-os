@@ -38,6 +38,7 @@ export default function Compressor() {
   const [quality, setQuality] = useState<number>(0.7); // 0.1 to 1.0
   const [videoResolution, setVideoResolution] = useState<string>('1280x720');
   const [audioBitrate, setAudioBitrate] = useState<string>('128k');
+  const [repairFiles, setRepairFiles] = useState<boolean>(false);
 
   // Status
   const [isCompressing, setIsCompressing] = useState(false);
@@ -198,14 +199,23 @@ export default function Compressor() {
           await ffmpeg.writeFile(inputName, await fetchFile(item.file));
           const crf = Math.round(35 - (quality * 20));
 
-          await ffmpeg.exec([
-            '-i', inputName,
+          const args = [];
+          if (repairFiles) {
+            args.push('-err_detect', 'ignore_err');
+          }
+          args.push('-i', inputName);
+          if (repairFiles) {
+            args.push('-fflags', '+genpts');
+          }
+          args.push(
             '-vf', `scale=${videoResolution}`,
             '-vcodec', 'libx264',
             '-crf', crf.toString(),
             '-preset', 'ultrafast',
             outputName
-          ]);
+          );
+
+          await ffmpeg.exec(args);
 
           ffmpeg.off('progress', progressHandler);
 
@@ -233,7 +243,11 @@ export default function Compressor() {
           const outputName = `output_${item.id}.mp3`;
 
           await ffmpeg.writeFile(inputName, await fetchFile(item.file));
-          const args = ['-i', inputName, '-b:a', audioBitrate];
+          const args = [];
+          if (repairFiles) {
+            args.push('-err_detect', 'ignore_err');
+          }
+          args.push('-i', inputName, '-b:a', audioBitrate);
           if (['64k', '32k', '16k'].includes(audioBitrate)) {
             args.push('-ac', '1');
             args.push('-ar', '22050');
@@ -361,6 +375,26 @@ export default function Compressor() {
                     <option value="96k">96 kbps (High Comp)</option>
                     <option value="64k">64 kbps (Max Comp)</option>
                   </select>
+                </div>
+              )}
+
+              {/* Repair Corrupt Files (Video & Audio) */}
+              {(currentBatchType === 'video' || currentBatchType === 'audio') && (
+                <div className={`col-span-1 flex items-center justify-between p-3 rounded-lg border ${isLight ? 'border-slate-200 bg-slate-50' : 'border-white/10 bg-black/20'}`}>
+                  <div>
+                    <label className={`block text-sm font-medium ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>Repair Files</label>
+                    <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Fix corrupted frames/timestamps</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={repairFiles} 
+                      onChange={(e) => setRepairFiles(e.target.checked)} 
+                      disabled={isCompressing} 
+                    />
+                    <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500 ${isLight ? 'bg-slate-300' : 'bg-slate-700'}`}></div>
+                  </label>
                 </div>
               )}
             </div>
